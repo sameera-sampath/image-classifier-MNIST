@@ -1,0 +1,324 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[61]:
+
+
+import tensorflow as tf
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+
+
+# In[7]:
+
+
+import matplotlib.pyplot as plt
+get_ipython().run_line_magic('matplotlib', 'inline')
+image_index = 2603
+print(y_train[image_index])
+
+
+# In[8]:
+
+
+plt.imshow(x_train[image_index], cmap='Greys')
+
+
+# In[9]:
+
+
+x_train.shape
+
+
+# In[62]:
+
+
+# Reshaping the array to 4-dims so that it can work with the Keras API
+x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
+x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
+input_shape = (28, 28, 1)
+# Making sure that the values are float so that we can get decimal points after division
+x_train = x_train.astype('float32')
+x_test = x_test.astype('float32')
+# Normalizing the RGB codes by dividing it to the max RGB value.
+x_train /= 255
+x_test /= 255
+print('x_train shape:', x_train.shape)
+print('Number of images in x_train', x_train.shape[0])
+print('Number of images in x_test', x_test.shape[0])
+
+
+# In[63]:
+
+
+# Importing the required Keras modules containing model and layers
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D, Activation
+# Creating a Sequential Model and adding the layers
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(4,4), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(3, 3)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(150, activation=tf.nn.relu))
+model.add(Dropout(0.15))
+model.add(Dense(10,activation=tf.nn.softmax))
+
+
+# In[69]:
+
+
+from tensorflow.keras.optimizers import SGD, RMSprop, Adam
+
+
+# In[16]:
+
+
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[17]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[14]:
+
+
+image_index = 4444
+plt.imshow(x_test[image_index].reshape(28, 28),cmap='Greys')
+pred = model.predict(x_test[image_index].reshape(1, 28, 28, 1))
+print(pred.argmax())
+
+
+# In[18]:
+
+
+# Creating a Sequential Model and adding the layers
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(128, activation=tf.nn.relu))
+model.add(Dropout(0.2))
+model.add(Dense(10,activation=tf.nn.softmax))
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[19]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[20]:
+
+
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(150, activation=tf.nn.relu))
+model.add(Dropout(0.15))
+model.add(Dense(10,activation=tf.nn.softmax))
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[21]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[22]:
+
+
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(150, activation=tf.nn.tanh))
+model.add(Dropout(0.15))
+model.add(Dense(10,activation=tf.nn.softmax))
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[23]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[24]:
+
+
+# Creating a Sequential Model and adding the layers
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(128, activation=tf.nn.tanh))
+model.add(Dropout(0.2))
+model.add(Dense(10,activation=tf.nn.softmax))
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[25]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[26]:
+
+
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(4,4), input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(3, 3)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(150, activation=tf.nn.tanh))
+model.add(Dropout(0.15))
+model.add(Dense(10,activation=tf.nn.softmax))
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
+
+
+# In[27]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[40]:
+
+
+from hyperopt import Trials, STATUS_OK, tpe
+from hyperas import optim
+from hyperas.distributions import choice, uniform
+
+
+# In[41]:
+
+
+from sklearn.model_selection import train_test_split
+
+
+# In[44]:
+
+
+from tensorflow.keras.utils import to_categorical
+
+
+# In[75]:
+
+
+def data():
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+    x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
+    x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    x_train /= 255
+    x_test /= 255
+    input_shape = (28, 28, 1)
+    return x_train, y_train, x_test, y_test, input_shape
+
+
+# In[76]:
+
+
+def model(x_train, y_train, x_test, y_test, input_shape):
+    model = Sequential()
+    model.add(Conv2D(28, kernel_size={{choice([(3,3), (5,5), (1,1)])}}, padding={{choice(['valid', 'same'])}}, input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size={{choice([(3,3), (2,2)])}}))
+    model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+    model.add(Dense({{choice([128, 256, 512, 1024])}}))
+    model.add(Activation({{choice(['relu', 'sigmoid', 'tanh'])}}))
+    model.add(Dropout({{uniform(0, 1)}}))
+    if {{choice(['one', 'two'])}} == 'two':
+        model.add(Dense({{choice([64, 128, 256, 512])}}))
+        model.add(Activation({{choice(['relu', 'sigmoid', 'tanh'])}}))
+        model.add(Dropout({{uniform(0, 1)}}))
+    model.add(Dense(10,activation=tf.nn.softmax))
+    choiceval = {{choice(['adam', 'sgd', 'rmsprop'])}}
+    if choiceval == 'adam':
+        optim = Adam(lr={{choice([10**-3, 10**-2, 10**-1])}})
+    elif choiceval == 'rmsprop':
+        optim = RMSprop(lr={{choice([10**-3, 10**-2, 10**-1])}})
+    else:
+        optim = SGD(lr={{choice([10**-3, 10**-2, 10**-1])}})
+    model.compile(optimizer=optim, 
+                  loss='sparse_categorical_crossentropy', 
+                  metrics=['accuracy'])
+    model.fit(x=x_train,y=y_train, epochs=10, validation_data=(x_test, y_test))
+    score, acc = model.evaluate(x_test, y_test, verbose=0)
+    print('Test accuracy:', acc)
+    return {'loss': -acc, 'status': STATUS_OK, 'model': model}
+
+
+# In[ ]:
+
+
+best_run, best_model = optim.minimize(model=model,
+                                      data=data,
+                                      algo=tpe.suggest,
+                                      max_evals=100,
+                                      trials=Trials(),notebook_name='1')
+
+
+# In[85]:
+
+
+x_train, y_train, x_test, y_test, input_shape = data()
+print("Best performing model chosen hyper-parameters:")
+print(best_run)
+print("Evalutation of best performing model:")
+print(best_model.evaluate(x_test, y_test))
+
+
+# In[115]:
+
+
+model = Sequential()
+model.add(Conv2D(28, kernel_size=(3,3), padding='same', input_shape=input_shape))
+model.add(MaxPooling2D(pool_size=(3,3)))
+model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
+model.add(Dense(128, activation=tf.nn.relu))
+model.add(Dropout(0.154067660224244))
+model.add(Dense(64, activation=tf.nn.relu))
+model.add(Dropout(0.154067660224244))
+model.add(Dense(10,activation=tf.nn.softmax))
+optim = Adam(lr=10**-3)
+model.compile(optimizer=optim, 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10, validation_data=(x_test, y_test))
+
+
+# In[116]:
+
+
+model.evaluate(x_test, y_test)
+
+
+# In[ ]:
+
+
+
+
